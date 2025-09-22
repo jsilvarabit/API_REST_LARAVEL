@@ -13,12 +13,8 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [users, setUsers] = useState([
-    // {
-    //   id: 1,
-    //   name: "Rafa",
-    //   email: "rafa@eduteka.com.br",
-    //   date_of_birth: "01/01/2000",
-    // },
+    // { id: 1, name: "João", email: "
+    // 
   ]);
 
   useEffect(() => {
