@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
 import { toast } from "react-toastify";
 
-function Register() {
+function Estoque() {
   const { userId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -105,18 +105,11 @@ function Register() {
 
       <div className="main_feed">
         <div className="feed_form">
-          {userId ? (
             <>
-              <h1>Alterar usuário</h1>
-              <p>Altere os dados do usuário na aplicação.</p>
+              <h1>Cadastrar produto</h1>
+              <p>Adicione novo produto ao estoque.</p>
             </>
-          ) : (
-            <>
-              <h1>Cadastrar novo usuário</h1>
-              <p>Cadastre um novo usuário no sistema.</p>
-            </>
-          )}
-
+          
           <Form>
             <Input
               type="text"
@@ -151,28 +144,6 @@ function Register() {
               }
             />
 
-             <Input
-              type="password"
-              name="password_confirmation"
-              value={formData.password_confirmation}
-              placeholder="Confirmar senha"
-              validateErrors={formDataErrors?.password_confirmation}
-              onChange={(e) =>
-                setFormData({ ...formData, password_confirmation: e.target.value })
-              }
-            />
-
-            <Input
-              type="date"
-              name="date_of_birth"
-              value={formData.date_of_birth}
-              placeholder="Data de nascimento"
-              validateErrors={formDataErrors?.date_of_birth}
-              onChange={(e) =>
-                setFormData({ ...formData, date_of_birth: e.target.value })
-              }
-            />
-
             <Link
               to={{
                 pathname: "/",
@@ -183,15 +154,10 @@ function Register() {
               Ver listagem
             </Link>
 
-            {userId ? (
-              <Button onClick={(e) => handleUpdate(e)}>
-                {isLoading ? "Alterando..." : "Alterar"}
-              </Button>
-            ) : (
-              <Button onClick={(e) => handleSubmit(e)}>
-                {isLoading ? "Cadastrando..." : "Cadastrar"}
-              </Button>
-            )}
+            <Button onClick={(e) => handleSubmit(e)}>
+            {isLoading ? "Cadastrando..." : "Cadastrar"}
+            </Button>
+            
           </Form>
         </div>
       </div>
@@ -199,4 +165,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Estoque;

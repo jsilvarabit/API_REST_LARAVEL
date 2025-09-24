@@ -1,15 +1,105 @@
-nav.menu {
-  padding: 30px 15px;
+/* Sidebar com gradiente e sombra */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(to bottom, #008080, #004d4d);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
-div.main_feed {
+/* Logo centralizada */
+.sidebar .logo {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.sidebar .logo img {
+  max-width: 120px;
+  height: auto;
+}
+
+/* Menu principal */
+.sidebarMenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebarMenu li {
+  margin-bottom: 10px;
+}
+
+/* Botão expansível */
+.menuToggle {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 6px;
+  transition: background 0.3s;
+  width: 100%;
+  text-align: left;
+}
+
+.menuToggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Submenu com animação */
+.submenu {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.submenu li a {
+  color: #f3e5f5;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.submenu li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Animação suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Conteúdo principal ajustado */
+.main_feed {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 50px 15px;
+  margin-left: 250px;
 }
 
-div.feed_form {
+.feed_form {
   width: 500px;
 }
 
@@ -33,7 +123,7 @@ p {
   margin-bottom: 35px;
 }
 
-div.feed_form a {
+.feed_form a {
   color: var(--color-e);
   text-decoration: none;
   font-size: 16px;
@@ -41,16 +131,17 @@ div.feed_form a {
   margin-bottom: 15px;
 }
 
-div.feed_form a:hover {
+.feed_form a:hover {
   text-decoration: underline;
 }
 
+/* Responsividade */
 @media (min-width: 990px) {
-  nav.menu {
-    padding: 30px 300px;
+  .sidebar {
+    padding: 30px 30px;
   }
 
-  div.main_feed {
+  .main_feed {
     padding: 50px 300px;
   }
 }

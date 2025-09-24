@@ -7,24 +7,18 @@ import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
 import { toast } from "react-toastify";
 
-function Register() {
+function AdicionarProduto() {
   const { userId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-    date_of_birth: "",
+    nomeProduto: "",
+    quantidade: "",
   });
 
   const [formDataErrors, setFormDataErrors] = useState({
-    name: [],
-    email: [],
-    password: [],
-    password_confirmation: [],
-    date_of_birth: [],
+    nomeProduto: [],
+    quantidade: [],
   });
 
   useEffect(() => {
@@ -105,93 +99,38 @@ function Register() {
 
       <div className="main_feed">
         <div className="feed_form">
-          {userId ? (
             <>
-              <h1>Alterar usuário</h1>
-              <p>Altere os dados do usuário na aplicação.</p>
+              <h1>Adicionar produto</h1>
+              <p>Adicione um produto ao estoque.</p>
             </>
-          ) : (
-            <>
-              <h1>Cadastrar novo usuário</h1>
-              <p>Cadastre um novo usuário no sistema.</p>
-            </>
-          )}
-
+          
           <Form>
             <Input
               type="text"
-              name="name"
-              value={formData.name}
-              placeholder="Nome"
-              validateErrors={formDataErrors?.name}
+              name="nomeProduto"
+              value={formData.nomeProduto}
+              placeholder="Nome do produto"
+              validateErrors={formDataErrors?.nomeProduto}
               onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
+                setFormData({ ...formData, nomeProduto: e.target.value })
               }
             />
 
             <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              placeholder="E-mail"
-              validateErrors={formDataErrors?.email}
+              type="text"
+              name="quantidade"
+              value={formData.quantidade}
+              placeholder="Quantidade"
+              validateErrors={formDataErrors?.quantidade}
               onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
+                setFormData({ ...formData, quantidade: e.target.value })
               }
             />
 
-             <Input
-              type="password"
-              name="password"
-              value={formData.password}
-              placeholder="Senha"
-              validateErrors={formDataErrors?.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-
-             <Input
-              type="password"
-              name="password_confirmation"
-              value={formData.password_confirmation}
-              placeholder="Confirmar senha"
-              validateErrors={formDataErrors?.password_confirmation}
-              onChange={(e) =>
-                setFormData({ ...formData, password_confirmation: e.target.value })
-              }
-            />
-
-            <Input
-              type="date"
-              name="date_of_birth"
-              value={formData.date_of_birth}
-              placeholder="Data de nascimento"
-              validateErrors={formDataErrors?.date_of_birth}
-              onChange={(e) =>
-                setFormData({ ...formData, date_of_birth: e.target.value })
-              }
-            />
-
-            <Link
-              to={{
-                pathname: "/",
-                // search: "?query=string",
-                // hash: "#hash",
-              }}
-            >
-              Ver listagem
-            </Link>
-
-            {userId ? (
-              <Button onClick={(e) => handleUpdate(e)}>
-                {isLoading ? "Alterando..." : "Alterar"}
-              </Button>
-            ) : (
-              <Button onClick={(e) => handleSubmit(e)}>
-                {isLoading ? "Cadastrando..." : "Cadastrar"}
-              </Button>
-            )}
+            <Button onClick={(e) => handleSubmit(e)}>
+            {isLoading ? "Adicionando..." : "Adicionar"}
+            </Button>
+            
           </Form>
         </div>
       </div>
@@ -199,4 +138,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default AdicionarProduto;

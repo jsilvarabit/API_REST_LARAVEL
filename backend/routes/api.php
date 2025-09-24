@@ -8,3 +8,5 @@ use Illuminate\Support\Facades\Route;
 
 //Esse comando cria todas as rotas automaticamente (index, show, store, update, destroy)
 Route::apiResource('users', UserController::class);
+
+

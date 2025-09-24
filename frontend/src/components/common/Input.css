@@ -5,7 +5,10 @@
 
 input[type="text"],
 input[type="email"],
-input[type="date"] {
+input[type="date"],
+input[type="password"],
+input[type="number"],
+input[type="decimal"] {
   background: var(--color-c);
   border: 2px solid var(--color-b);
   border-radius: 5px;
@@ -22,7 +25,8 @@ input[type="date"] {
 
 input[type="text"]:hover,
 input[type="email"]:hover,
-input[type="date"]:hover {
+input[type="date"]:hover,
+input[type="password"]:hover {
   transform: scale(1.015);
   border-color: var(--color-j);
   opacity: 1;

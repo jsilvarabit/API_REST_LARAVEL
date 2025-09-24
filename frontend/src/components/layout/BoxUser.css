@@ -4,7 +4,7 @@ div.box_user {
   filter: drop-shadow(var(--shadow));
   margin-bottom: 15px;
   display: flex;
-  background: var(--color-c);
+  background: linear-gradient(to bottom, #008080, #004d4d);
   transition: all 0.3s;
   opacity: 0.8;
 }
