@@ -53,7 +53,7 @@ function Sidebar() {
           {isUsuariosOpen && (
             <ul className="submenu">
               <li>
-                <Link to="/">Listar Usuários</Link>
+                <Link to="/listarUsuarios">Listar Usuários</Link>
               </li>
               <li>
                 <Link to="/cadastrar">Cadastrar Novo Usuário</Link>

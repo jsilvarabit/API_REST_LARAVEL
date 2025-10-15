@@ -6,6 +6,7 @@ import BaixaProduto from "../pages/BaixaProduto";
 import ExcluirProduto from "../pages/ExcluirProduto";
 import CadastrarProduto from "../pages/CadastrarProduto";
 import Estoque from "../pages/Estoque";
+import Usuarios from "../pages/ListaUsuarios";
 
 function Routes() {
   return (
@@ -19,6 +20,7 @@ function Routes() {
         <Route path="/excluirProduto" element={<ExcluirProduto />} />
         <Route path="/cadastrarProduto" element={<CadastrarProduto />} />
         <Route path="/acompanharEstoque" element={<Estoque />} />
+        <Route path="/listarUsuarios" element={<Usuarios />} />
         <Route path="*" element={<h1>Página não encontrada</h1>} />
       </RoutesManager>
     </>

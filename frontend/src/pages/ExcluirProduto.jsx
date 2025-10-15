@@ -1,102 +1,49 @@
 import { Button } from "../components/common/Button";
-import Input from "../components/common/Input";
-import Form from "../components/common/Form";
 import Navbar from "../components/layout/Navbar";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
 import { toast } from "react-toastify";
 
 function ExcluirProduto() {
-  const { userId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
+  const [produtos, setProdutos] = useState([]);
+  const [produtoId, setProdutoId] = useState("");
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-    date_of_birth: "",
-  });
-
-  const [formDataErrors, setFormDataErrors] = useState({
-    name: [],
-    email: [],
-    password: [],
-    password_confirmation: [],
-    date_of_birth: [],
-  });
-
+  // Carrega os produtos ao montar
   useEffect(() => {
-    if (userId) {
-      loadUser();
-    }
-  }, [userId]);
+    const fetchProdutos = async () => {
+      try {
+        const response = await api.get("/listaProdutos");
+        setProdutos(response.data);
+      } catch (error) {
+        toast.error("Erro ao carregar produtos.");
+      }
+    };
 
-  const loadUser = async () => {
-    setIsLoading(true);
-
-    await api
-      .get(`/users/${userId}`)
-      .then((response) => {
-        setFormData(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        // console.error("Erro ao buscar usuários:", error);
-        setIsLoading(false);
-      });
-  };
-
-  const handleUpdate = async (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-    setFormDataErrors({});
-
-    await api
-      .put(`/users/${userId}`, formData)
-      .then((response) => {
-        // console.log(response);
-        toast.success("Cadastro alterado com sucesso!");
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        // Erro de validação dos dados
-        if (error.status === 422) {
-          setFormDataErrors(error.response.data.errors);
-        } else {
-          // console.log(error);
-          toast.error(error.response.data);
-        }
-
-        setIsLoading(false);
-      });
-  };
+    fetchProdutos();
+  }, []);
 
   const handleSubmit = async (e) => {
-    setIsLoading(true);
     e.preventDefault();
-    setFormDataErrors({});
+    setIsLoading(true);
 
-    await api
-      .post("/users", formData)
-      .then((response) => {
-        // console.log(response);
-        toast.success("Cadastro realizado com sucesso!");
-        setFormData({});
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        // Erro de validação dos dados
-        if (error.status === 422) {
-          setFormDataErrors(error.response.data.errors);
-        } else {
-          // console.log(error);
-          toast.error(error.response.data);
-        }
+    if (!produtoId) {
+      toast.warning("Selecione um produto para excluir.");
+      setIsLoading(false);
+      return;
+    }
 
-        setIsLoading(false);
-      });
+    try {
+      await api.delete(`/produtos/${produtoId}`);
+      toast.success("Produto excluído com sucesso!");
+      setProdutoId("");
+      // Atualiza a lista após exclusão
+      setProdutos(produtos.filter((p) => p.id !== parseInt(produtoId)));
+    } catch (error) {
+      toast.error("Erro ao excluir produto.");
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -105,60 +52,33 @@ function ExcluirProduto() {
 
       <div className="main_feed">
         <div className="feed_form">
-            <>
-              <h1>Cadastrar produto</h1>
-              <p>Adicione novo produto ao estoque.</p>
-            </>
-          
-          <Form>
-            <Input
-              type="text"
-              name="name"
-              value={formData.name}
-              placeholder="Nome"
-              validateErrors={formDataErrors?.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
+          <h1>Excluir produto</h1>
+          <p>Selecione um produto para excluir do estoque.</p>
 
-            <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              placeholder="E-mail"
-              validateErrors={formDataErrors?.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-
-             <Input
-              type="password"
-              name="password"
-              value={formData.password}
-              placeholder="Senha"
-              validateErrors={formDataErrors?.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-
-            <Link
-              to={{
-                pathname: "/",
-                // search: "?query=string",
-                // hash: "#hash",
+          <form onSubmit={handleSubmit}>
+            <select
+              name="produtoId"
+              value={produtoId}
+              onChange={(e) => setProdutoId(e.target.value)}
+              style={{
+                padding: "10px",
+                fontSize: "16px",
+                marginBottom: "20px",
+                width: "100%",
               }}
             >
-              Ver listagem
-            </Link>
+              <option value="">Selecione um produto</option>
+              {produtos.map((produto) => (
+                <option key={produto.id} value={produto.id}>
+                  {produto.name}
+                </option>
+              ))}
+            </select>
 
-            <Button onClick={(e) => handleSubmit(e)}>
-            {isLoading ? "Cadastrando..." : "Cadastrar"}
+            <Button type="submit">
+              {isLoading ? "Excluindo..." : "Excluir"}
             </Button>
-            
-          </Form>
+          </form>
         </div>
       </div>
     </div>

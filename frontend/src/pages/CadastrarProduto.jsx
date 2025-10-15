@@ -130,7 +130,7 @@ function CadastrarProduto() {
             />
 
              <Input
-              type="decimal"
+              type="money"
               name="preco"
               value={formData.preco}
               placeholder="Preço"

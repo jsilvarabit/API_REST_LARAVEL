@@ -1,0 +1,25 @@
+
+.produto-box {
+  padding: 16px;
+  margin: 10px;
+  width: 45%;
+  box-sizing: border-box;
+  background: linear-gradient(to bottom, #008080, #004d4d);
+  transition: all 0.3s;
+  opacity: 0.8;
+  border-radius: 5px;
+  border: 2px solid var(--color-b);
+  filter: drop-shadow(var(--shadow));
+}
+
+.produto-box:hover{
+  transform: scale(1.015);
+  border: 2px solid var(--color-j);
+  opacity: 1;
+}
+
+.alerta-estoque {
+  margin-top: 10px;
+  color: #fa0800;
+  font-weight: bold;
+}

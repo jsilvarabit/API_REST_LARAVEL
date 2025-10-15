@@ -12,19 +12,13 @@ function BaixaProduto() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-    date_of_birth: "",
+    nomeProduto: "",
+    quantidade: "",
   });
 
   const [formDataErrors, setFormDataErrors] = useState({
-    name: [],
-    email: [],
-    password: [],
-    password_confirmation: [],
-    date_of_birth: [],
+    nomeProduto: [],
+    quantidade: [],
   });
 
   useEffect(() => {
@@ -106,56 +100,35 @@ function BaixaProduto() {
       <div className="main_feed">
         <div className="feed_form">
             <>
-              <h1>Cadastrar produto</h1>
-              <p>Adicione novo produto ao estoque.</p>
+              <h1>Saída de produto</h1>
+              <p>Dar baixa em um produto do estoque.</p>
             </>
           
           <Form>
             <Input
               type="text"
-              name="name"
-              value={formData.name}
-              placeholder="Nome"
-              validateErrors={formDataErrors?.name}
+              name="nomeProduto"
+              value={formData.nomeProduto}
+              placeholder="Nome do produto"
+              validateErrors={formDataErrors?.nomeProduto}
               onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
+                setFormData({ ...formData, nomeProduto: e.target.value })
               }
             />
 
             <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              placeholder="E-mail"
-              validateErrors={formDataErrors?.email}
+              type="text"
+              name="quantidade"
+              value={formData.quantidade}
+              placeholder="Quantidade"
+              validateErrors={formDataErrors?.quantidade}
               onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
+                setFormData({ ...formData, quantidade: e.target.value })
               }
             />
-
-             <Input
-              type="password"
-              name="password"
-              value={formData.password}
-              placeholder="Senha"
-              validateErrors={formDataErrors?.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-
-            <Link
-              to={{
-                pathname: "/",
-                // search: "?query=string",
-                // hash: "#hash",
-              }}
-            >
-              Ver listagem
-            </Link>
 
             <Button onClick={(e) => handleSubmit(e)}>
-            {isLoading ? "Cadastrando..." : "Cadastrar"}
+            {isLoading ? "Dando baixa..." : "Dar baixa"}
             </Button>
             
           </Form>

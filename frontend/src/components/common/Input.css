@@ -8,7 +8,7 @@ input[type="email"],
 input[type="date"],
 input[type="password"],
 input[type="number"],
-input[type="decimal"] {
+input[type="money"] {
   background: var(--color-c);
   border: 2px solid var(--color-b);
   border-radius: 5px;

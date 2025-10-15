@@ -6,3 +6,50 @@ div.feed_form > span {
   text-align: right;
   margin-bottom: 10px;
 }
+
+.table-products {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  background-color: #8ebdb6;
+}
+
+.table-products th,
+.table-products td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.table-products th {
+  background-color:#3e838c;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.produtos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+

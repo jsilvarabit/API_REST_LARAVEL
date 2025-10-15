@@ -175,7 +175,7 @@ function Register() {
 
             <Link
               to={{
-                pathname: "/",
+                pathname: "/listarUsuarios",
                 // search: "?query=string",
                 // hash: "#hash",
               }}

@@ -1,103 +1,41 @@
-import { Button } from "../components/common/Button";
-import Input from "../components/common/Input";
-import Form from "../components/common/Form";
 import Navbar from "../components/layout/Navbar";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import Loader from "../components/common/Loader";
 import api from "../services/api";
-import { toast } from "react-toastify";
+import "./Home.css";
 
 function Estoque() {
-  const { userId } = useParams();
+  const numProductsPerPage = 10;
+  const [products, setProducts] = useState([]);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-    date_of_birth: "",
-  });
-
-  const [formDataErrors, setFormDataErrors] = useState({
-    name: [],
-    email: [],
-    password: [],
-    password_confirmation: [],
-    date_of_birth: [],
-  });
-
   useEffect(() => {
-    if (userId) {
-      loadUser();
-    }
-  }, [userId]);
+    loadProducts(currentPage);
+  }, [currentPage]);
 
-  const loadUser = async () => {
+  const loadProducts = async (page) => {
     setIsLoading(true);
 
     await api
-      .get(`/users/${userId}`)
+      .get("/acompanharEstoque", {
+        params: {
+          current_page: page,
+        },
+      })
       .then((response) => {
-        setFormData(response.data);
+        setProducts(response.data.data);
+        setTotalProducts(response.data.infos.total_products);
         setIsLoading(false);
       })
       .catch((error) => {
-        // console.error("Erro ao buscar usuários:", error);
+        console.error("Erro ao buscar produtos:", error);
         setIsLoading(false);
       });
   };
 
-  const handleUpdate = async (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-    setFormDataErrors({});
-
-    await api
-      .put(`/users/${userId}`, formData)
-      .then((response) => {
-        // console.log(response);
-        toast.success("Cadastro alterado com sucesso!");
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        // Erro de validação dos dados
-        if (error.status === 422) {
-          setFormDataErrors(error.response.data.errors);
-        } else {
-          // console.log(error);
-          toast.error(error.response.data);
-        }
-
-        setIsLoading(false);
-      });
-  };
-
-  const handleSubmit = async (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-    setFormDataErrors({});
-
-    await api
-      .post("/users", formData)
-      .then((response) => {
-        // console.log(response);
-        toast.success("Cadastro realizado com sucesso!");
-        setFormData({});
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        // Erro de validação dos dados
-        if (error.status === 422) {
-          setFormDataErrors(error.response.data.errors);
-        } else {
-          // console.log(error);
-          toast.error(error.response.data);
-        }
-
-        setIsLoading(false);
-      });
-  };
+  const totalPages = Math.ceil(totalProducts / numProductsPerPage);
 
   return (
     <div>
@@ -105,60 +43,57 @@ function Estoque() {
 
       <div className="main_feed">
         <div className="feed_form">
+          <h1>Controle de Estoque</h1>
+          <p>Listagem de todos os produtos disponíveis no estoque.</p>
+
+          {isLoading ? (
+            <Loader />
+          ) : products.length <= 0 ? (
+            <p>Nenhum produto cadastrado até o momento!</p>
+          ) : (
             <>
-              <h1>Cadastrar produto</h1>
-              <p>Adicione novo produto ao estoque.</p>
+              <table className="table-products">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Estoque</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map((product) => (
+                    <tr key={product.id}>
+                      <td>{product.id}</td>
+                      <td>{product.nome}</td>
+                      <td>R$ {parseFloat(product.preco).toFixed(2)}</td>
+                      <td>{product.quantidade_estoque}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="pagination">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                  Anterior
+                </button>
+
+                <span>
+                  Página {currentPage} de {totalPages}
+                </span>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                  Próxima
+                </button>
+              </div>
             </>
-          
-          <Form>
-            <Input
-              type="text"
-              name="name"
-              value={formData.name}
-              placeholder="Nome"
-              validateErrors={formDataErrors?.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-
-            <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              placeholder="E-mail"
-              validateErrors={formDataErrors?.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-
-             <Input
-              type="password"
-              name="password"
-              value={formData.password}
-              placeholder="Senha"
-              validateErrors={formDataErrors?.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-
-            <Link
-              to={{
-                pathname: "/",
-                // search: "?query=string",
-                // hash: "#hash",
-              }}
-            >
-              Ver listagem
-            </Link>
-
-            <Button onClick={(e) => handleSubmit(e)}>
-            {isLoading ? "Cadastrando..." : "Cadastrar"}
-            </Button>
-            
-          </Form>
+          )}
         </div>
       </div>
     </div>

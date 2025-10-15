@@ -1,65 +1,27 @@
-import { Button } from "../components/common/Button";
 import Navbar from "../components/layout/Navbar";
 import { useEffect, useState } from "react";
-import BoxUser from "../components/layout/BoxUser";
+import BoxProduto from "../components/layout/BoxProduto";
 import Loader from "../components/common/Loader";
 import api from "../services/api";
 import "./Home.css";
 
 function Home() {
-  const numUsersPerPage = 3;
-  const [totalUsers, setTotalUsers] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [produtos, setProdutos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [users, setUsers] = useState([
-    // { id: 1, name: "João", email: "
-    // 
-  ]);
-
   useEffect(() => {
-    loadUsers();
+    loadProdutos();
   }, []);
 
-  const loadUsers = async () => {
+  const loadProdutos = async () => {
     setIsLoading(true);
-
-    await api
-      .get("/users", {
-        params: {
-          current_page: currentPage,
-          // per_page: 3,
-        },
-      })
-      .then((response) => {
-        setUsers([...users, ...response.data.data]);
-        setCurrentPage(currentPage + 1);
-        setTotalUsers(response.data.infos.total_users);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        // console.error("Erro ao buscar usuários:", error);
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    if (totalUsers !== users.length) {
-      fixCurrentPage();
+    try {
+      const response = await api.get("/produtos-baixo-estoque");
+      setProdutos(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar produtos:", error);
     }
-  }, [totalUsers]);
-
-  const fixCurrentPage = () => {
-    //Arredonda pra cima
-    let maxNumPage = Math.ceil(totalUsers / numUsersPerPage);
-    
-    if (currentPage > maxNumPage) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const loadMore = () => {
-    loadUsers();
+    setIsLoading(false);
   };
 
   return (
@@ -68,48 +30,19 @@ function Home() {
 
       <div className="main_feed">
         <div className="feed_form">
-          <h1>Listagem dos usuários</h1>
-          <p>Listagem de todos usuários cadastrados no sistema.</p>
+          <h1>Produtos com estoque baixo</h1>
+          <p>Listagem de produtos com menos de 50 unidades em estoque.</p>
 
-          {users.length <= 0 ? (
-            <>
-              {isLoading ? (
-                <Loader />
-              ) : (
-                <p>Nenhum usuário cadastrado até o momento!.</p>
-              )}
-            </>
+          {isLoading ? (
+            <Loader />
+          ) : produtos.length === 0 ? (
+            <p>Nenhum produto com estoque baixo.</p>
           ) : (
-            <>
-              {users.length === 1 ? (
-                <span>1 Usuário</span>
-              ) : (
-                <span>{totalUsers} Usuários encontrados</span>
-              )}
-
-              {users.map((user, index) => {
-                return (
-                  <BoxUser
-                    key={index}
-                    user={user}
-                    users={users}
-                    setUsers={setUsers}
-                    totalUsers={totalUsers}
-                    setTotalUsers={setTotalUsers}
-                  />
-                );
-              })}
-
-              {users.length < totalUsers && (
-                <>
-                  {isLoading ? (
-                    <Loader />
-                  ) : (
-                    <Button onClick={() => loadMore()}>Carregar mais</Button>
-                  )}
-                </>
-              )}
-            </>
+            <div className="produtos-grid">
+              {produtos.map((produto) => (
+                <BoxProduto key={produto.id} produto={produto} />
+              ))}
+            </div>
           )}
         </div>
       </div>
